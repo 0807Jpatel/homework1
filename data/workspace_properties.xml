@@ -38,6 +38,11 @@
 	<property name="ATTRIBUTE_UPDATE_ERROR_TITLE"	    value="Attribute Update Error"></property>
 	<property name="UPDATE_ERROR_MESSAGE"		    value="An error occured updating the UI"></property>
 	<property name="UPDATE_ERROR_TITLE"		    value="UI Update Error"></property>
+	
+	<!-- INPUT DIALOG BUTTONS-->
+	<property name="OK_BUTTON"               value= "OK"></property>
+	<property name="CANCEL_BUTTON"            value = "Cancel"></property>
+	
     </property_list>
     <property_options_list>
     </property_options_list>

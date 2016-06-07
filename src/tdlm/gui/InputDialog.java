@@ -19,20 +19,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import properties_manager.PropertiesManager;
 import saf.AppTemplate;
 import saf.ui.AppGUI;
+import tdlm.PropertyType;
 import tdlm.data.ToDoItem;
 /**
  *
  * @author jappatel
  */
 public class InputDialog extends Dialog<ToDoItem>{
-      
-    private final String DESCRIPTION = "Descrpition";
-    private final String CATAGORY = "Catagory";
-    private final String INT_DATE = "Initial Date";
-    private final String FINAL_DATE = "Final Date";
-    private final String COMPLETE = "Complete";
     private ToDoItem todo = new ToDoItem();
     
     private TextField CatagoryTextField;
@@ -44,6 +40,8 @@ public class InputDialog extends Dialog<ToDoItem>{
     private ToDoItem item;       
     
     public InputDialog(String Catagory, String Description, LocalDate startDate, LocalDate endDate, boolean complete, AppTemplate app){
+	PropertiesManager prop = PropertiesManager.getPropertiesManager();
+	
 	Stage stage = new Stage();
 	stage.initModality(Modality.APPLICATION_MODAL);
 	stage.setResizable(false);
@@ -58,28 +56,28 @@ public class InputDialog extends Dialog<ToDoItem>{
 	
 	
 	CatagoryTextField = new TextField(Catagory);
-	gridpane.add(new Label(CATAGORY), 0, 0);
+	gridpane.add(new Label(prop.getProperty(PropertyType.CATEGORY_COLUMN_HEADING)), 0, 0);
 	gridpane.add(CatagoryTextField, 1, 0);
 	
 	DescriptionTextField = new TextField(Description);
-	gridpane.add(new Label(DESCRIPTION), 0, 1);
+	gridpane.add(new Label(prop.getProperty(PropertyType.DETAILS_HEADING_LABEL)), 0, 1);
 	gridpane.add(DescriptionTextField, 1, 1);
 	
 	startDateDatePicker = new DatePicker(startDate);
-	gridpane.add(new Label(INT_DATE), 0, 2);
+	gridpane.add(new Label(prop.getProperty(PropertyType.START_DATE_COLUMN_HEADING)), 0, 2);
 	gridpane.add(startDateDatePicker, 1, 2);
 	
 	endDateDatePicker = new DatePicker(endDate);	
-	gridpane.add(new Label(FINAL_DATE), 0, 3);
+	gridpane.add(new Label(prop.getProperty(PropertyType.END_DATE_COLUMN_HEADING)), 0, 3);
 	gridpane.add(endDateDatePicker, 1, 3);
 	
 	completeCheckBox = new CheckBox();
 	completeCheckBox.setSelected(complete);
-	gridpane.add(new Label(COMPLETE), 0, 4);
+	gridpane.add(new Label(prop.getProperty(PropertyType.CATEGORY_COLUMN_HEADING)), 0, 4);
 	gridpane.add(completeCheckBox, 1, 4);
 	
-	Button okButton = new Button("OK");
-	Button cancleButton = new Button("Cancel");
+	Button okButton = new Button(prop.getProperty(PropertyType.OK_BUTTON));
+	Button cancleButton = new Button(prop.getProperty(PropertyType.CANCEL_BUTTON));
 	
 	
 	gridpane.add(cancleButton, 0, 5);
