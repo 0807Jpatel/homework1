@@ -135,12 +135,11 @@ public class FileManager implements AppFileComponent {
 	String owner = json.getString(JSON_OWNER);
 	dataManager.setName(name);
 	dataManager.setOwner(owner);
+	
 	workspace.reloadWorkspace();
 	
 	// AND NOW LOAD ALL THE ITEMS
 	JsonArray jsonItemArray = json.getJsonArray(JSON_ITEMS);
-	if(!jsonItemArray.isEmpty())
-	   workspace.enableButtons(true);
 	for (int i = 0; i < jsonItemArray.size(); i++) {
 	    JsonObject jsonItem = jsonItemArray.getJsonObject(i);
 	    ToDoItem item = loadItem(jsonItem);

@@ -51,7 +51,7 @@ public class ToDoListController {
 	ToDoItem toDoItem= idd.getToDo();
 	if(toDoItem != null){
 	    dataManager.addItem(toDoItem);
-	    workspace.enableButtons(true);
+//	    workspace.enableButtons(true);
 	}
 	workspace.reloadWorkspace();
     }
@@ -62,8 +62,8 @@ public class ToDoListController {
 	TableView<ToDoItem> itemsTable = workspace.getitemsTable();
 	ToDoItem selectedItem = itemsTable.getSelectionModel().getSelectedItem();
 	dataManager.removeItem(selectedItem);
-	if(itemsTable.getItems().isEmpty())
-	    workspace.enableButtons(false);
+//	if(itemsTable.getItems().isEmpty())
+//	    workspace.enableButtons(false);
 	app.getGUI().updateToolbarControls(false);
 	workspace.reloadWorkspace();	
     }

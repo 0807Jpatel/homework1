@@ -201,7 +201,16 @@ public class Workspace extends AppWorkspaceComponent {
         itemsTable.getColumns().add(itemCompletedColumn);
         DataManager dataManager = (DataManager)app.getDataComponent();
         itemsTable.setItems(dataManager.getItems());
-
+	
+	itemsTable.focusedProperty().addListener(e -> { 
+	    enableButtons(itemsTable.isFocused());
+	});
+	
+	itemsTable.getFocusModel().focusedIndexProperty().addListener(e -> {
+	    moveUpItemButton.setDisable(itemsTable.getSelectionModel().getSelectedIndex() == 0);
+	    moveDownItemButton.setDisable(itemsTable.getSelectionModel().getFocusedIndex() == itemsTable.getItems().size()-1);
+	    removeItemButton.setDisable(false);
+	});
 	
 	
 	// AND NOW SETUP THE WORKSPACE
@@ -285,6 +294,8 @@ public class Workspace extends AppWorkspaceComponent {
     public void reloadWorkspace() {
 	DataManager dataManager = (DataManager)app.getDataComponent();
 	itemsTable.setItems(dataManager.getItems());
+	nameTextField.setText(dataManager.getName());
+	ownerTextField.setText(dataManager.getOwner());
     }
     
     public void enableButtons(boolean setto){

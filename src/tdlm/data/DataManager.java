@@ -112,7 +112,9 @@ public class DataManager implements AppDataComponent {
      */
     @Override
     public void reset() {
-	
+	name = new SimpleStringProperty();
+	owner = new SimpleStringProperty();
+	items.clear();
     }
     
 }
