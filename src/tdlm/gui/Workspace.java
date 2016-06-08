@@ -48,6 +48,8 @@ public class Workspace extends AppWorkspaceComponent {
     static final String CLASS_HEADING_LABEL = "heading_label";
     static final String CLASS_SUBHEADING_LABEL = "subheading_label";
     static final String CLASS_PROMPT_LABEL = "prompt_label";
+    static final String CLASS_PROMPT_HBOX = "hbox";
+    static final String CLASS_PROMPT_HBOXL = "hboxL";
     static final String EMPTY_TEXT = "";
     static final int LARGE_TEXT_FIELD_LENGTH = 20;
     static final int SMALL_TEXT_FIELD_LENGTH = 5;
@@ -163,6 +165,7 @@ public class Workspace extends AppWorkspaceComponent {
         
         // ARRANGE THE CONTENTS OF BOTH ON A SINGLE LINE
         nameAndOwnerBox.getChildren().addAll(nameBox, ownerBox);
+	
         
         // NOW ORGANIZE THE CONTENTS OF detailsBox
         detailsBox.getChildren().add(detailsLabel);
@@ -189,11 +192,11 @@ public class Workspace extends AppWorkspaceComponent {
         itemCompletedColumn = new TableColumn(props.getProperty(PropertyType.COMPLETED_COLUMN_HEADING));
         
         // AND LINK THE COLUMNS TO THE DATA
-        itemCategoryColumn.setCellValueFactory(new PropertyValueFactory<String, String>("category"));
-        itemDescriptionColumn.setCellValueFactory(new PropertyValueFactory<String, String>("description"));
-        itemStartDateColumn.setCellValueFactory(new PropertyValueFactory<LocalDate, String>("startDate"));
-        itemEndDateColumn.setCellValueFactory(new PropertyValueFactory<LocalDate, String>("endDate"));
-        itemCompletedColumn.setCellValueFactory(new PropertyValueFactory<Boolean, String>("completed"));
+        itemCategoryColumn.setCellValueFactory(new PropertyValueFactory<>("category"));
+        itemDescriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        itemStartDateColumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
+        itemEndDateColumn.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        itemCompletedColumn.setCellValueFactory(new PropertyValueFactory<>("completed"));
         itemsTable.getColumns().add(itemCategoryColumn);
         itemsTable.getColumns().add(itemDescriptionColumn);
         itemsTable.getColumns().add(itemStartDateColumn);
@@ -201,16 +204,13 @@ public class Workspace extends AppWorkspaceComponent {
         itemsTable.getColumns().add(itemCompletedColumn);
         DataManager dataManager = (DataManager)app.getDataComponent();
         itemsTable.setItems(dataManager.getItems());
+
+	itemCategoryColumn.prefWidthProperty().bind(itemsTable.widthProperty().divide(4));
+	itemDescriptionColumn.prefWidthProperty().bind(itemsTable.widthProperty().divide(4));
+	itemStartDateColumn.prefWidthProperty().bind(itemsTable.widthProperty().divide(6));
+	itemEndDateColumn.prefWidthProperty().bind(itemsTable.widthProperty().divide(6));
+	itemCompletedColumn.prefWidthProperty().bind(itemsTable.widthProperty().divide(6.1)); 
 	
-	itemsTable.focusedProperty().addListener(e -> { 
-	    enableButtons(itemsTable.isFocused());
-	});
-	
-	itemsTable.getFocusModel().focusedIndexProperty().addListener(e -> {
-	    moveUpItemButton.setDisable(itemsTable.getSelectionModel().getSelectedIndex() == 0);
-	    moveDownItemButton.setDisable(itemsTable.getSelectionModel().getFocusedIndex() == itemsTable.getItems().size()-1);
-	    removeItemButton.setDisable(false);
-	});
 	
 	
 	// AND NOW SETUP THE WORKSPACE
@@ -244,6 +244,9 @@ public class Workspace extends AppWorkspaceComponent {
         });
         
         itemsTable.setOnMouseClicked(e -> {
+	    removeItemButton.setDisable(itemsTable.getSelectionModel().getSelectedItem() == null);
+	    moveUpItemButton.setDisable(itemsTable.getSelectionModel().getSelectedIndex()== 0);
+	    moveDownItemButton.setDisable(itemsTable.getSelectionModel().getSelectedIndex()== (itemsTable.getItems().size()-1));	    
             if (e.getClickCount() == 2) {
                 toDoListController.processEditItem();
             }
@@ -282,8 +285,13 @@ public class Workspace extends AppWorkspaceComponent {
         detailsLabel.getStyleClass().add(CLASS_SUBHEADING_LABEL);
         nameLabel.getStyleClass().add(CLASS_PROMPT_LABEL);
         ownerLabel.getStyleClass().add(CLASS_PROMPT_LABEL);
+	nameBox.getStyleClass().add(CLASS_PROMPT_HBOXL);
+	ownerBox.getStyleClass().add(CLASS_PROMPT_HBOXL);
+	nameAndOwnerBox.getStyleClass().add(CLASS_PROMPT_HBOX);
+	itemsToolbar.getStyleClass().add(CLASS_PROMPT_HBOXL);
         itemsBox.getStyleClass().add(CLASS_BORDERED_PANE);
         itemsLabel.getStyleClass().add(CLASS_SUBHEADING_LABEL);
+	
     }
 
     /**
@@ -296,12 +304,6 @@ public class Workspace extends AppWorkspaceComponent {
 	itemsTable.setItems(dataManager.getItems());
 	nameTextField.setText(dataManager.getName());
 	ownerTextField.setText(dataManager.getOwner());
-    }
-    
-    public void enableButtons(boolean setto){
-	removeItemButton.setDisable(!setto);
-	moveUpItemButton.setDisable(!setto);
-	moveDownItemButton.setDisable(!setto);
     }
     
     public  TableView<ToDoItem> getitemsTable(){

@@ -7,6 +7,9 @@ package tdlm.gui;
 import java.time.LocalDate;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -17,6 +20,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import properties_manager.PropertiesManager;
@@ -45,14 +49,11 @@ public class InputDialog extends Dialog<ToDoItem>{
 	Stage stage = new Stage();
 	stage.initModality(Modality.APPLICATION_MODAL);
 	stage.setResizable(false);
-	stage.setHeight(200);
-	stage.setWidth(280);
-	
+	stage.setHeight(300);
+	stage.setWidth(400);
+	stage.centerOnScreen();
 	GridPane gridpane = new GridPane();
-	gridpane.setVgap(10);
-	gridpane.setHgap(3);
-	
-	
+	gridpane.getStyleClass().add("gridpane");
 	
 	
 	CatagoryTextField = new TextField(Catagory);
@@ -60,7 +61,7 @@ public class InputDialog extends Dialog<ToDoItem>{
 	gridpane.add(CatagoryTextField, 1, 0);
 	
 	DescriptionTextField = new TextField(Description);
-	gridpane.add(new Label(prop.getProperty(PropertyType.DETAILS_HEADING_LABEL)), 0, 1);
+	gridpane.add(new Label(prop.getProperty(PropertyType.DESCRIPTION_COLUMN_HEADING)), 0, 1);
 	gridpane.add(DescriptionTextField, 1, 1);
 	
 	startDateDatePicker = new DatePicker(startDate);
@@ -76,12 +77,19 @@ public class InputDialog extends Dialog<ToDoItem>{
 	gridpane.add(new Label(prop.getProperty(PropertyType.CATEGORY_COLUMN_HEADING)), 0, 4);
 	gridpane.add(completeCheckBox, 1, 4);
 	
+	HBox hbox = new HBox();
 	Button okButton = new Button(prop.getProperty(PropertyType.OK_BUTTON));
 	Button cancleButton = new Button(prop.getProperty(PropertyType.CANCEL_BUTTON));
+	okButton.getStyleClass().add("buttonWidth");
+	cancleButton.getStyleClass().add("buttonWidth");
+	hbox.getChildren().addAll(cancleButton, okButton);
+	hbox.getStyleClass().add("hbox");
 	
 	
-	gridpane.add(cancleButton, 0, 5);
-	gridpane.add(okButton, 1, 5);
+//	gridpane.add(cancleButton, 0, 5); gridpane.setHalignment(cancleButton, HPos.RIGHT);
+//	gridpane.add(okButton, 1, 5); gridpane.setHalignment(okButton, HPos.LEFT);
+//	
+	gridpane.add(hbox, 1, 5);
 	
 	okButton.setOnAction(e->{
 	    item = new ToDoItem(CatagoryTextField.getText(), DescriptionTextField.getText(),
@@ -95,6 +103,7 @@ public class InputDialog extends Dialog<ToDoItem>{
 	    stage.close();
 	});
 	Scene scene = new Scene(gridpane);
+	scene.getStylesheets().add("file:/home/jappatel/Documents/CSE%20219%20homeworks/homework1/ToDoListMakerApp/build/classes/tdlm/css/InputDialog.css");
 	stage.setScene(scene);
 	stage.showAndWait();	
 	
