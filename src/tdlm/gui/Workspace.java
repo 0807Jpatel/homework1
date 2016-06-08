@@ -204,6 +204,12 @@ public class Workspace extends AppWorkspaceComponent {
         itemsTable.getColumns().add(itemCompletedColumn);
         DataManager dataManager = (DataManager)app.getDataComponent();
         itemsTable.setItems(dataManager.getItems());
+	
+	itemsTable.focusedProperty().addListener(e -> {
+	    removeItemButton.setDisable(!itemsTable.isFocused());
+	    moveUpItemButton.setDisable(!itemsTable.isFocused());
+	    moveDownItemButton.setDisable(!itemsTable.isFocused());
+	});
 
 	itemCategoryColumn.prefWidthProperty().bind(itemsTable.widthProperty().divide(4));
 	itemDescriptionColumn.prefWidthProperty().bind(itemsTable.widthProperty().divide(4));
@@ -245,7 +251,7 @@ public class Workspace extends AppWorkspaceComponent {
         
         itemsTable.setOnMouseClicked(e -> {
 	    removeItemButton.setDisable(itemsTable.getSelectionModel().getSelectedItem() == null);
-	    moveUpItemButton.setDisable(itemsTable.getSelectionModel().getSelectedIndex()== 0);
+	    moveUpItemButton.setDisable(itemsTable.getSelectionModel().getSelectedIndex()== 0 || itemsTable.getSelectionModel().getSelectedItem() == null);
 	    moveDownItemButton.setDisable(itemsTable.getSelectionModel().getSelectedIndex()== (itemsTable.getItems().size()-1));	    
             if (e.getClickCount() == 2) {
                 toDoListController.processEditItem();
