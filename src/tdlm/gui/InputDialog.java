@@ -33,6 +33,13 @@ import tdlm.data.ToDoItem;
  * @author jappatel
  */
 public class InputDialog extends Dialog<ToDoItem>{
+    private static final String GRID_PANE = "gridpane";
+    private static final String BUTTON_WIDTH = "buttonWidth";
+    private static final String HBOX = "hbox";
+    private static final String CSS_PATH = "file:/home/jappatel/Documents/CSE%20219%20homeworks/homework1/ToDoListMakerApp/build/classes/tdlm/css/InputDialog.css";
+    
+    
+    
     private ToDoItem todo = new ToDoItem();
     
     private TextField CatagoryTextField;
@@ -40,7 +47,7 @@ public class InputDialog extends Dialog<ToDoItem>{
     private DatePicker startDateDatePicker;
     private DatePicker endDateDatePicker;
     private CheckBox completeCheckBox;
-    
+   
     private ToDoItem item;       
     
     public InputDialog(String Catagory, String Description, LocalDate startDate, LocalDate endDate, boolean complete, AppTemplate app){
@@ -53,7 +60,7 @@ public class InputDialog extends Dialog<ToDoItem>{
 	stage.setWidth(400);
 	stage.centerOnScreen();
 	GridPane gridpane = new GridPane();
-	gridpane.getStyleClass().add("gridpane");
+	gridpane.getStyleClass().add(GRID_PANE);
 	
 	
 	CatagoryTextField = new TextField(Catagory);
@@ -80,10 +87,10 @@ public class InputDialog extends Dialog<ToDoItem>{
 	HBox hbox = new HBox();
 	Button okButton = new Button(prop.getProperty(PropertyType.OK_BUTTON));
 	Button cancleButton = new Button(prop.getProperty(PropertyType.CANCEL_BUTTON));
-	okButton.getStyleClass().add("buttonWidth");
-	cancleButton.getStyleClass().add("buttonWidth");
+	okButton.getStyleClass().add(BUTTON_WIDTH);
+	cancleButton.getStyleClass().add(BUTTON_WIDTH);
 	hbox.getChildren().addAll(cancleButton, okButton);
-	hbox.getStyleClass().add("hbox");
+	hbox.getStyleClass().add(HBOX);
 	
 	
 //	gridpane.add(cancleButton, 0, 5); gridpane.setHalignment(cancleButton, HPos.RIGHT);
@@ -103,7 +110,7 @@ public class InputDialog extends Dialog<ToDoItem>{
 	    stage.close();
 	});
 	Scene scene = new Scene(gridpane);
-	scene.getStylesheets().add("file:/home/jappatel/Documents/CSE%20219%20homeworks/homework1/ToDoListMakerApp/build/classes/tdlm/css/InputDialog.css");
+	scene.getStylesheets().add(CSS_PATH);
 	stage.setScene(scene);
 	stage.showAndWait();	
 	
